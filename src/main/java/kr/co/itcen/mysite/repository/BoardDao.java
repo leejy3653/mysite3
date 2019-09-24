@@ -1,4 +1,4 @@
-package kr.co.itcen.mysite.dao;
+package kr.co.itcen.mysite.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +10,7 @@ import java.util.List;
 
 import kr.co.itcen.mysite.vo.BoardVo;
 import kr.co.itcen.mysite.vo.CommentVo;
+
 
 public class BoardDao {
 	
