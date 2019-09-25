@@ -9,19 +9,24 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.mysite.vo.GuestBookVo;
 
 @Repository
 public class GuestBookDao {
+	@Autowired
+	private DataSource datasource;
 
 	public void delete(GuestBookVo vo) {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
 			String sql = " delete from guestbook where no = ? and password= ?";
 
@@ -57,7 +62,7 @@ public class GuestBookDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
 			String sql = "insert into guestbook values(null, ?, ?, ?, now())";
 			pstmt = connection.prepareStatement(sql);
@@ -108,7 +113,7 @@ public class GuestBookDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
 			String sql = "   select no, name, contents, date_format(reg_date, '%Y-%m-%d %h:%i:%s')" + 
 						 "     from guestbook" + 
@@ -152,19 +157,5 @@ public class GuestBookDao {
 		return result;
 	}
 
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
-
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.1.116:3306/webdb?characterEncoding=utf8";
-			connection = DriverManager.getConnection(url, "webdb", "webdb");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("Fail to Loading Driver:" + e);
-		}
-
-		return connection;
-	}
 
 }

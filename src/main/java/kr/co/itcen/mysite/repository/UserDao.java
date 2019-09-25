@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.itcen.mysite.exception.UserDaoException;
@@ -14,6 +17,8 @@ import kr.co.itcen.mysite.vo.UserVo;
 
 @Repository
 public class UserDao {
+	@Autowired
+	private DataSource datasource;
 
 	public Boolean insert(UserVo vo) throws UserDaoException{
 		Boolean result = false;
@@ -25,9 +30,9 @@ public class UserDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
-			String sql = "inser into user values(null, ?, ?, ?, ?, now())";
+			String sql = "insert into user values(null, ?, ?, ?, ?, now())";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, vo.getName());
 			pstmt.setString(2, vo.getEmail());
@@ -85,7 +90,7 @@ public class UserDao {
 		ResultSet rs = null;
 
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
 			String sql = "select no, name from user where email = ? and password = ?";
 			pstmt = connection.prepareStatement(sql);
@@ -132,7 +137,7 @@ public class UserDao {
 		ResultSet rs = null;
 		
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
 			String sql = "select name, email, gender from user where no = ?";
 			pstmt = connection.prepareStatement(sql);
@@ -175,7 +180,7 @@ public class UserDao {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		try {
-			connection = getConnection();
+			connection = datasource.getConnection();
 
 			String sql = "update user set name = ?, email = ?, gender = ? where no = ?";
 			pstmt = connection.prepareStatement(sql);
@@ -205,20 +210,6 @@ public class UserDao {
 
 	
 
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
 
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			String url = "jdbc:mariadb://192.168.1.116:3306/webdb?characterEncoding=utf8";
-			connection = DriverManager.getConnection(url, "webdb", "webdb");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("Fail to Loading Driver:" + e);
-		}
-
-		return connection;
-	}
 
 }
