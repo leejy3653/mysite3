@@ -18,7 +18,14 @@ public class UserService {
 	public UserVo getUser(UserVo vo) {
 		return userDao.get(vo);
 	}
-	
-	
-	
+
+	public void update(UserVo vo) {
+		userDao.update(vo);
+		
+	}
+	public UserVo get(Long no) {
+		
+		return userDao.get(no);
+	}
+
 }
