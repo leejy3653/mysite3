@@ -12,7 +12,7 @@
 	]]>
 	</select>
 
-	<select id="getlist2" parameterType="no"
+	<select id="getlist2" parameterType="Long"
 		resultType="guestbookvo">
 	<![CDATA[
 	  select no,

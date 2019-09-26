@@ -3,8 +3,15 @@
 <mapper namespace="user">
 	<insert id="insert" parameterType="kr.co.itcen.mysite.vo.UserVo">
 	<![CDATA[
-		insert into user values (null, #{name }, #{email }, #{password }, #{gender }, now())
+		insert 
+		  into user 
+		values (null, #{name }, #{email }, #{password }, #{gender }, now())
 		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+			select last_insert_id()
+			]]>
+		</selectKey>
 	</insert>
 	<select id="getByEmailAndPassword1" parameterType="uservo"
 		resultType="uservo">
@@ -15,7 +22,7 @@
 	</select>
 
 	<select id="getByEmailAndPassword2" parameterType="map"
-		resultType="userVo">
+		resultType="uservo">
 	<![CDATA[
 	select no, name from user where email = #{email } and password = #{uservo }
 	]]>
@@ -35,13 +42,13 @@
 	 ]]>
 
 	</update>
-	
+
 	<select id="getBy" parameterType="long" resultType="uservo">
 	<![CDATA[
 	select no, name, email, gender
 	  from user 
 	 where no = #{no }
-	]]>	<!-- 기본타입이 넘어올때는 원칙은 아무거나 입력해도 된다  -->
+	]]>	<!-- 기본타입이 넘어올때는 원칙은 아무거나 입력해도 된다 -->
 
 	</select>
 </mapper>
