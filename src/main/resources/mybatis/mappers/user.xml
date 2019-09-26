@@ -6,20 +6,42 @@
 		insert into user values (null, #{name }, #{email }, #{password }, #{gender }, now())
 		]]>
 	</insert>
-	<select id="getByEmailAndPassword1" parameterType="uservo" resultType="userVo">
+	<select id="getByEmailAndPassword1" parameterType="uservo"
+		resultType="uservo">
 	<![CDATA[
 	select no, name from user where email = #{email } and password = #{password }
 	]]>
 
 	</select>
-	
-	<select id="getByEmailAndPassword2" parameterType="map" resultType="userVo">
+
+	<select id="getByEmailAndPassword2" parameterType="map"
+		resultType="userVo">
 	<![CDATA[
-	select no, name from user where email = #{email } and password = #{password }
+	select no, name from user where email = #{email } and password = #{uservo }
 	]]>
 	</select>
+
+	<update id="update" parameterType="uservo">
+	<![CDATA[
+	update user
+	   set name = #{name },
+	 ]]>
+		<if test="password !=''">
+			password = #{password },
+		</if>
+	 <![CDATA[
+	 	   gender= #{gender } 
+	 where no = #{no }
+	 ]]>
+
+	</update>
 	
+	<select id="getBy" parameterType="long" resultType="uservo">
+	<![CDATA[
+	select no, name, email, gender
+	  from user 
+	 where no = #{no }
+	]]>	<!-- 기본타입이 넘어올때는 원칙은 아무거나 입력해도 된다  -->
 
-
-
+	</select>
 </mapper>
