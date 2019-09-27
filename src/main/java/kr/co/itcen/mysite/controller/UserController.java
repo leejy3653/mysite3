@@ -2,18 +2,12 @@ package kr.co.itcen.mysite.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.mariadb.jdbc.internal.failover.HandleErrorResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.sun.xml.internal.ws.handler.HandlerException;
-
-import kr.co.itcen.mysite.exception.UserDaoException;
 import kr.co.itcen.mysite.service.UserService;
 import kr.co.itcen.mysite.vo.UserVo;
 
