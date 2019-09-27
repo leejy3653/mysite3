@@ -1,9 +1,6 @@
 package kr.co.itcen.mysite.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,24 +22,24 @@ public class UserDao {
 	@Autowired
 	private DataSource datasource;
 
-	public Boolean insert(UserVo vo) throws UserDaoException {
+	public Boolean insert(UserVo vo) throws UserDaoException {//
 		int count = sqlSession.insert("user.insert", vo);
 		System.out.println(vo);
 
 		return count == 1;
 	}
 
-	public UserVo get(Long no) {
+	public UserVo get(Long no) {//
 		return sqlSession.selectOne("user.getByNo", no);
 	}
 
-	public UserVo get(UserVo vo) {
+	public UserVo get(UserVo vo) {//
 		UserVo result = sqlSession.selectOne("user.getByEmailAndPassword1", vo);
 		return result;
 
 	}
 
-	public UserVo get(String email, String password) {
+	public UserVo get(String email, String password) {//
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
 		map.put("password", password);
@@ -50,50 +47,9 @@ public class UserDao {
 		return result;
 	}
 
-	public UserVo getUpdate(Long no) {
-		UserVo userVo = null;
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			connection = datasource.getConnection();
-
-			String sql = "select name, email, gender from user where no = ?";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setLong(1, no);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				String name = rs.getString(1);
-				String email = rs.getString(2);
-				String gender = rs.getString(3);
-
-				userVo = new UserVo();
-				userVo.setName(name);
-				userVo.setEmail(email);
-				userVo.setGender(gender);
-			}
-		} catch (SQLException e) {
-			System.out.println("error : " + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	public int getUpdate(Long no) {
+		return sqlSession.update("user.getUpdate" ,no);
 		}
-		return userVo;
-	}
 
 	public Boolean update(UserVo vo) {
 //		Boolean result = false;
